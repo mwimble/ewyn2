@@ -1,0 +1,30 @@
+## In terminal 1 -- run ROSCORE
+# Note the following exports, particularl ROS_IP and ROS_MASTER_URI
+#declare -x ROS_DISTRO="indigo"
+#declare -x ROS_ETC_DIR="/opt/ros/indigo/etc/ros"
+#declare -x ROS_IP="10.0.1.118"
+#declare -x ROS_MASTER_URI="http://localhost:11311"
+#declare -x ROS_PACKAGE_PATH="/home/pi/ewyn_ws/install/share:/home/pi/ewyn_ws/install/stacks:/home/pi/ewyn_ws/src:/home/pi/catkin_ws/src:/opt/ros/indigo/share:/opt/ros/indigo/stacks"
+#declare -x ROS_ROOT="/opt/ros/indigo/share/ros"
+
+source ewyn_ws/install/setup.bash
+roscore
+
+## In terminal 2 -- run the rosserial client to listen to the Arduino
+source ewyn_ws/install/setup.bash
+roslaunch rosserial_server serial.launch port:=/dev/ttyACM0
+
+# In terminal 3 -- develop code for the arduino, then push using
+cd ~/ewyn_ws/platformio
+platformio run
+
+# In terminal 3 or a new terminal -- listen to topics
+source ewyn_ws/install/setup.bash
+rostopic list
+rostopic echo motorLog
+rostopic echo /turtle1/cmd_vel
+
+# On Linux machine
+export ROS_IP=10.0.1.14
+export ROS_MASTER_URI="http://10.0.1.118:11311"
+rosrun turtlesim turtle_teleop_key

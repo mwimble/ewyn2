@@ -29,7 +29,6 @@ void setup() {
 //	lineSensor = new LineSensor();
 //	lineSensor->calibrate();
 	motor = new Motor(nh);
-	/*
 	Motor::Command c;
 	c.direction = Motor::STOP; motor->enqueue(c);
 	c.direction = Motor::BACKWARD; motor->enqueue(c);
@@ -41,7 +40,6 @@ void setup() {
 	c.direction = Motor::STOP; motor->enqueue(c);
 	c.direction = Motor::LEFT_TURN; motor->enqueue(c);
 	c.direction = Motor::STOP; motor->enqueue(c);
-	*/
 
 	nh.subscribe(Motor::sub);
 

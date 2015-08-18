@@ -151,8 +151,9 @@ bool start_motor(std_srvs::Empty::Request &req,
 
 
 int main(int argc, char * argv[]) {
+//fprintf(stderr, "START\n");fflush(stderr);
     ros::init(argc, argv, "rplidar_node");
-
+//fprintf(stderr, "Post init\n");fflush(stderr);
     std::string serial_port;
     int serial_baudrate = 115200;
     std::string frame_id;
@@ -161,18 +162,21 @@ int main(int argc, char * argv[]) {
 
     ros::NodeHandle nh;
     ros::Publisher scan_pub = nh.advertise<sensor_msgs::LaserScan>("scan", 1000);
+//fprintf(stderr, "post advertise\n");fflush(stderr);
     ros::NodeHandle nh_private("~");
     nh_private.param<std::string>("serial_port", serial_port, "/dev/ttyUSB0"); 
     nh_private.param<int>("serial_baudrate", serial_baudrate, 115200); 
     nh_private.param<std::string>("frame_id", frame_id, "laser_frame");
     nh_private.param<bool>("inverted", inverted, "false");
     nh_private.param<bool>("angle_compensate", angle_compensate, "true");
-	
+//fprintf(stderr, "post nh_private\n");fflush(stderr);
+
     u_result     op_result;
    
     // create the driver instance
 	drv = RPlidarDriver::CreateDriver(RPlidarDriver::DRIVER_TYPE_SERIALPORT);
-    
+//fprintf(stderr, "post CreateDriver\n");fflush(stderr);
+
     if (!drv) {
         fprintf(stderr, "Create Driver fail, exit\n");
         return -2;
@@ -186,6 +190,8 @@ int main(int argc, char * argv[]) {
         return -1;
     }
 
+// fprintf(stderr, "post connect\n");fflush(stderr);
+
     // check health...
     if (!checkRPLIDARHealth(drv)) {
         RPlidarDriver::DisposeDriver(drv);
@@ -193,24 +199,25 @@ int main(int argc, char * argv[]) {
     }
 
 
+//fprintf(stderr, "post check health\n");fflush(stderr);
 	ros::ServiceServer stop_motor_service = nh.advertiseService("stop_motor", stop_motor);
 	ros::ServiceServer start_motor_service = nh.advertiseService("start_motor", start_motor);
 	
     // start scan...
     op_result = drv->startScan();
-//fprintf(stderr, "startScan result: %lx\n", op_result);
+//fprintf(stderr, "startScan result: %lx\n", op_result);fflush(stderr);
 
     ros::Time start_scan_time;
     ros::Time end_scan_time;
     double scan_duration;
     while (ros::ok()) {
-//fprintf(stderr, "Start loop\n");
+//fprintf(stderr, "Start loop\n");fflush(stderr);
         rplidar_response_measurement_node_t nodes[360*2];
         size_t   count = _countof(nodes);
 
         start_scan_time = ros::Time::now();
         op_result = drv->grabScanData(nodes, count);
-//fprintf(stderr, "grabScanData op_result: %lx\n", op_result);
+//fprintf(stderr, "grabScanData op_result: %lx\n", op_result);fflush(stderr);
         end_scan_time = ros::Time::now();
         scan_duration = (end_scan_time - start_scan_time).toSec() * 1e-3;
 

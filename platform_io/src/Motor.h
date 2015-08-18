@@ -162,7 +162,7 @@ ros::Subscriber<geometry_msgs::Twist> Motor::sub("/turtle1/cmd_vel", &velCallbac
 QueueList<Motor::Command> Motor::_commands;
 bool Motor::motorBusy = false;
 const char* Motor::DIRECTION_STR[] = {
-    "FORWARD",
+    "FORWARD", 
     "BACKWARD",
     "LEFT_TURN",
     "RIGHT_TURN",
