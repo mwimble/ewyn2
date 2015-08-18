@@ -25,9 +25,14 @@ public:
     };
   
     typedef struct {
+        int leftVelocity;
+        int rightVelocity;
+        float zVelocity;
         Direction direction;
     } Command;
   
+    static const float STRAIGHT_RADIANS = PI / 4.0;
+
 private:
     static const char* DIRECTION_STR[5];
 
@@ -37,12 +42,16 @@ private:
     static const int I4 = 13;
     static const int SPEED_A = 9;
     static const int SPEED_B = 10;
-    int _speed;  // Speed of motor.
+    //int _speed;  // Speed of motor.
+    int leftSpeed;
+    int rightSpeed;
+    float zSpeed;
 
     const ros::NodeHandle&  _nh;
 
     static QueueList<Command> _commands;
 
+/*
     void forward() {
         rlog->info("FORWARD speed: %d", _speed);
         analogWrite(SPEED_A, _speed);
@@ -82,13 +91,16 @@ private:
         digitalWrite(I2, LOW);  // Motor A clockwise.
         digitalWrite(I1, HIGH);
     }
+    */
   
 public:
     static bool motorBusy;
     static ros::Subscriber<geometry_msgs::Twist> sub;
 
     Motor(const ros::NodeHandle&  nh) : _nh(nh) {
-        _speed = 127;
+        //_speed = 127;
+        leftSpeed = 0;
+        rightSpeed = 0;
         pinMode(I1, OUTPUT);
         pinMode(I2, OUTPUT);
         pinMode(I3, OUTPUT);
@@ -120,6 +132,34 @@ public:
             sei();
             rlog->info("Motor run command: %s", DIRECTION_STR[command.direction]);
 
+            leftSpeed = command.leftVelocity;
+            rightSpeed = command.rightVelocity;
+            zSpeed = command.zVelocity;
+            if (command.rightVelocity > 0) {
+                rlog->info("Right clockwise at %d", leftSpeed);
+                analogWrite(SPEED_B, rightSpeed);
+                digitalWrite(I4, HIGH); // Motor B clockwise.
+                digitalWrite(I3, LOW);
+            } else {
+                rlog->info("Right anticlockwise at %d", -leftSpeed);
+                analogWrite(SPEED_B, -rightSpeed);
+                digitalWrite(I4, LOW); // Motor B anticlockwise.
+                digitalWrite(I3, HIGH);
+            }
+
+            if (command.leftVelocity > 0) {
+                rlog->info("Left clockwise at %d", rightSpeed);
+                analogWrite(SPEED_A, leftSpeed);
+                digitalWrite(I2, LOW);  // Motor A clockwise.
+                digitalWrite(I1, HIGH);
+           } else {
+                rlog->info("Left anticlockwise at %d", -rightSpeed);
+                analogWrite(SPEED_A, -leftSpeed);
+                digitalWrite(I2, HIGH);  // Motor A anticlockwise.
+                digitalWrite(I1, LOW);
+           }
+
+            /*
             switch (command.direction) {
             case FORWARD:
                 forward();
@@ -141,6 +181,7 @@ public:
                 stop();
                 break;
             }
+            */
 
             startTimer5(250000L); // 0.25 sec. #####
         }
@@ -155,6 +196,9 @@ public:
         return _commands.count();
     }
 
+    double leftVelocity() { return leftSpeed; }
+    double rightVelocity() { return rightSpeed; }
+    double zVelocity() { return zSpeed; }
 };
 
 ros::Subscriber<geometry_msgs::Twist> Motor::sub("/turtle1/cmd_vel", &velCallback);
@@ -186,6 +230,9 @@ void velCallback(const geometry_msgs::Twist& msg) {
                (int) msg.angular.z);
 
     Motor::Command c;
+    c.rightVelocity = sin(msg.angular.z + Motor::STRAIGHT_RADIANS) * 127;
+    c.leftVelocity = cos(msg.angular.z + Motor::STRAIGHT_RADIANS) * 127;
+    c.zVelocity = msg.angular.z;
     if (msg.linear.x == 2) {
         c.direction = Motor::FORWARD; motor->enqueue(c);
     }

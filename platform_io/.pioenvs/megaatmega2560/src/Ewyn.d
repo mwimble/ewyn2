@@ -27,9 +27,20 @@
  .pioenvs/megaatmega2560/FrameworkArduino/Arduino.h \
  .pioenvs/megaatmega2560/FrameworkArduinoVariant/pins_arduino.h \
  .pioenvs/megaatmega2560/FrameworkArduino/HardwareSerial.h \
+ .pioenvs/megaatmega2560/ros_lib/geometry_msgs/Quaternion.h \
  .pioenvs/megaatmega2560/QueueList/QueueList.h src/Motor.h \
  .pioenvs/megaatmega2560/ros_lib/geometry_msgs/Twist.h \
  .pioenvs/megaatmega2560/ros_lib/geometry_msgs/Vector3.h \
  .pioenvs/megaatmega2560/Timer5/Timer5.h src/RosLogger.h \
  .pioenvs/megaatmega2560/ros_lib/std_msgs/String.h \
- src/QuadratureEncoder.h
+ src/QuadratureEncoder.h \
+ .pioenvs/megaatmega2560/ros_lib/tf/transform_broadcaster.h \
+ .pioenvs/megaatmega2560/ros_lib/tf/tfMessage.h \
+ .pioenvs/megaatmega2560/ros_lib/geometry_msgs/TransformStamped.h \
+ .pioenvs/megaatmega2560/ros_lib/std_msgs/Header.h \
+ .pioenvs/megaatmega2560/ros_lib/geometry_msgs/Transform.h \
+ .pioenvs/megaatmega2560/ros_lib/nav_msgs/Odometry.h \
+ .pioenvs/megaatmega2560/ros_lib/geometry_msgs/PoseWithCovariance.h \
+ .pioenvs/megaatmega2560/ros_lib/geometry_msgs/Pose.h \
+ .pioenvs/megaatmega2560/ros_lib/geometry_msgs/Point.h \
+ .pioenvs/megaatmega2560/ros_lib/geometry_msgs/TwistWithCovariance.h
