@@ -7,14 +7,14 @@
 //#include "LineSensor.h"
 #include "Motor.h"
 //#include "QTRSensors.h"
-//#include "QuadratureEncoder.h"
+#include "QuadratureEncoder.h"
 #include "RosLogger.h"
 #include <Timer5.h>
 
 ros::NodeHandle  	nh;
 //LineSensor*			lineSensor;
 Motor*				motor;
-//QuadratureEncoder*	quadratureEncoder;
+QuadratureEncoder*	quadratureEncoder;
 RosLogger*			rlog;
 
 int loopCounter = 1;
@@ -25,10 +25,12 @@ void setup() {
 	delay(1000);
 
 	rlog = new RosLogger(nh);
-//	quadratureEncoder = new QuadratureEncoder();
+	quadratureEncoder = new QuadratureEncoder();
 //	lineSensor = new LineSensor();
 //	lineSensor->calibrate();
 	motor = new Motor(nh);
+
+	/*
 	Motor::Command c;
 	c.direction = Motor::STOP; motor->enqueue(c);
 	c.direction = Motor::BACKWARD; motor->enqueue(c);
@@ -40,6 +42,7 @@ void setup() {
 	c.direction = Motor::STOP; motor->enqueue(c);
 	c.direction = Motor::LEFT_TURN; motor->enqueue(c);
 	c.direction = Motor::STOP; motor->enqueue(c);
+	*/
 
 	nh.subscribe(Motor::sub);
 

@@ -31,4 +31,5 @@
  .pioenvs/megaatmega2560/ros_lib/geometry_msgs/Twist.h \
  .pioenvs/megaatmega2560/ros_lib/geometry_msgs/Vector3.h \
  .pioenvs/megaatmega2560/Timer5/Timer5.h src/RosLogger.h \
- .pioenvs/megaatmega2560/ros_lib/std_msgs/String.h
+ .pioenvs/megaatmega2560/ros_lib/std_msgs/String.h \
+ src/QuadratureEncoder.h

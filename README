@@ -1,3 +1,33 @@
+## github repository ewyn2
+
+## Arduino pins
+# AREF
+# GND
+# 13 - Motor IN-4
+# 12 - Motor IN-3
+# 11 - Motor IN-2
+# 10 - Motor EN-B
+# 09 - Motor EN-A
+# 08 - Motor IN-1
+#
+# 07 - Ping Servo PWM
+# 06
+# 06
+# 04
+# 03 (INT-1) Ping
+# 02 (INT-0)
+# 01 Tx (serial)
+# 00 Rx (serial)
+#
+# 14 Tx3
+# 15 Rx3
+# 16 Tx2
+# 17 Rx2
+# 18 Tx1 INT-5 QRB (wh)
+# 19 Tx1 INT-4 QRA (blk)
+# 20 SDA INT-3 SDA
+# 21 SCL INT-2 SDB
+
 ## In terminal 1 -- run ROSCORE
 # Note the following exports, particularl ROS_IP and ROS_MASTER_URI
 #declare -x ROS_DISTRO="indigo"
